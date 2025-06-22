@@ -1,0 +1,32 @@
+.DS_Store
+.claude/
+*.swp
+
+# Xcode
+build/
+DerivedData/
+*.xcworkspace
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+xcuserdata/
+*.xccheckout
+*.moved-aside
+
+# iOS
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# CocoaPods
+Pods/
+
+# Carthage
+Carthage/Build/
+
+# Swift Package Manager
+.swiftpm/
+
+# Generated files
+CleanMyContacts.xcodeproj/
