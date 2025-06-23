@@ -5,8 +5,10 @@ struct ContactCardView: View {
     let contact: CNContact
     let onSwipeLeft: () -> Void
     let onSwipeRight: () -> Void
+    let contactsManager: ContactsManager
     
     @State private var offset = CGSize.zero
+    @State private var showingEditView = false
     
     private var cardBackgroundColor: Color {
         if offset.width > 30 {
@@ -116,5 +118,11 @@ struct ContactCardView: View {
                     }
                 }
         )
+        .onTapGesture(count: 2) {
+            showingEditView = true
+        }
+        .sheet(isPresented: $showingEditView) {
+            ContactEditView(contactsManager: contactsManager, contact: contact)
+        }
     }
 }

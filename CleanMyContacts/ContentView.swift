@@ -66,14 +66,20 @@ struct ContentView: View {
                             },
                             onSwipeRight: {
                                 contactsManager.keepCurrentContact()
-                            }
+                            },
+                            contactsManager: contactsManager
                         )
                         .padding()
                         
-                        Text("← Swipe left to move to trash • Swipe right to keep →")
-                            .font(.caption)
-                            .foregroundColor(.secondary)
-                            .padding()
+                        VStack(spacing: 4) {
+                            Text("← Swipe left to move to trash • Swipe right to keep →")
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                            Text("Double-tap to edit contact")
+                                .font(.caption2)
+                                .foregroundColor(.secondary)
+                        }
+                        .padding()
                     }
                 }
             }

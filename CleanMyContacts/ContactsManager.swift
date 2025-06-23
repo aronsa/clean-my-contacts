@@ -8,8 +8,11 @@ class ContactsManager: ObservableObject {
     @Published var hasPermission = false
     
     private let contactStore = CNContactStore()
+    private let userDefaults = UserDefaults.standard
+    private let currentIndexKey = "currentContactIndex"
     
     init() {
+        loadPersistedState()
         requestAccess()
     }
     
@@ -34,6 +37,9 @@ class ContactsManager: ObservableObject {
                     self.contacts.append(contact)
                 }
             }
+            DispatchQueue.main.async {
+                self.validateCurrentIndex()
+            }
         } catch {
             print("Failed to fetch contacts: \(error)")
         }
@@ -49,6 +55,7 @@ class ContactsManager: ObservableObject {
         if currentContactIndex >= contacts.count && contacts.count > 0 {
             currentContactIndex = contacts.count - 1
         }
+        savePersistedState()
     }
     
     func restoreContactFromTrash(_ contact: CNContact) {
@@ -91,6 +98,7 @@ class ContactsManager: ObservableObject {
     func keepCurrentContact() {
         guard currentContactIndex < contacts.count else { return }
         currentContactIndex += 1
+        savePersistedState()
     }
     
     var currentContact: CNContact? {
@@ -100,5 +108,50 @@ class ContactsManager: ObservableObject {
     
     var hasMoreContacts: Bool {
         return currentContactIndex < contacts.count
+    }
+    
+    private func loadPersistedState() {
+        currentContactIndex = userDefaults.integer(forKey: currentIndexKey)
+    }
+    
+    func savePersistedState() {
+        userDefaults.set(currentContactIndex, forKey: currentIndexKey)
+    }
+    
+    func validateCurrentIndex() {
+        if currentContactIndex >= contacts.count {
+            currentContactIndex = max(0, contacts.count - 1)
+            savePersistedState()
+        }
+    }
+    
+    func updateContact(_ contact: CNContact, firstName: String, lastName: String, phoneNumbers: [String], emailAddresses: [String], completion: @escaping (Bool, String?) -> Void) {
+        let mutableContact = contact.mutableCopy() as! CNMutableContact
+        
+        mutableContact.givenName = firstName
+        mutableContact.familyName = lastName
+        
+        mutableContact.phoneNumbers = phoneNumbers.map { phoneNumber in
+            CNLabeledValue(label: CNLabelPhoneNumberMain, value: CNPhoneNumber(stringValue: phoneNumber))
+        }
+        
+        mutableContact.emailAddresses = emailAddresses.map { email in
+            CNLabeledValue(label: CNLabelHome, value: email as NSString)
+        }
+        
+        let saveRequest = CNSaveRequest()
+        saveRequest.update(mutableContact)
+        
+        do {
+            try contactStore.execute(saveRequest)
+            
+            if let index = contacts.firstIndex(where: { $0.identifier == contact.identifier }) {
+                contacts[index] = mutableContact as CNContact
+            }
+            
+            completion(true, nil)
+        } catch {
+            completion(false, "Failed to update contact: \(error.localizedDescription)")
+        }
     }
 }

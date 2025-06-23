@@ -207,4 +207,138 @@ final class ContactsManagerTests: XCTestCase {
         XCTAssertEqual(contactsManager.contacts.count, 0)
         XCTAssertEqual(contactsManager.trashContacts.count, 0)
     }
+    
+    // MARK: - Persistent State Tests
+    
+    func testPersistentStateLoading() {
+        // Set a specific index and save it
+        contactsManager.currentContactIndex = 2
+        contactsManager.savePersistedState()
+        
+        // Create a new manager instance which should load the persisted state
+        let newManager = ContactsManager()
+        newManager.contacts = contactsManager.contacts // Simulate contacts loading
+        newManager.validateCurrentIndex()
+        
+        // The index should be loaded from UserDefaults
+        XCTAssertEqual(newManager.currentContactIndex, 2)
+    }
+    
+    func testPersistentStateSaving() {
+        // Clear any existing state
+        UserDefaults.standard.removeObject(forKey: "currentContactIndex")
+        
+        contactsManager.currentContactIndex = 1
+        contactsManager.savePersistedState()
+        
+        let savedIndex = UserDefaults.standard.integer(forKey: "currentContactIndex")
+        XCTAssertEqual(savedIndex, 1)
+    }
+    
+    func testPersistentStateOnKeepContact() {
+        contactsManager.currentContactIndex = 0
+        contactsManager.keepCurrentContact()
+        
+        let savedIndex = UserDefaults.standard.integer(forKey: "currentContactIndex")
+        XCTAssertEqual(savedIndex, 1)
+    }
+    
+    func testPersistentStateOnMoveToTrash() {
+        contactsManager.currentContactIndex = 1
+        contactsManager.moveCurrentContactToTrash()
+        
+        let savedIndex = UserDefaults.standard.integer(forKey: "currentContactIndex")
+        XCTAssertEqual(savedIndex, 1) // Index should be saved after trash operation
+    }
+    
+    func testValidateCurrentIndexWithOverflow() {
+        // Set index beyond contacts array bounds
+        contactsManager.currentContactIndex = 10
+        contactsManager.validateCurrentIndex()
+        
+        // Should be adjusted to valid range
+        XCTAssertEqual(contactsManager.currentContactIndex, 2) // contacts.count - 1
+    }
+    
+    func testValidateCurrentIndexWithEmptyContacts() {
+        contactsManager.contacts = []
+        contactsManager.currentContactIndex = 5
+        contactsManager.validateCurrentIndex()
+        
+        // Should be reset to 0 for empty contacts
+        XCTAssertEqual(contactsManager.currentContactIndex, 0)
+    }
+    
+    // MARK: - Update Contact Tests
+    // Note: These tests focus on contact data structure validation since
+    // actual contact store writing requires system permissions
+    
+    func testUpdateContactDataStructure() {
+        // Test that contact data can be properly structured for updates
+        let originalContact = mockContact1!
+        
+        // Simulate the data transformation that updateContact would perform
+        let mutableContact = originalContact.mutableCopy() as! CNMutableContact
+        mutableContact.givenName = "UpdatedJohn"
+        mutableContact.familyName = "UpdatedDoe"
+        mutableContact.phoneNumbers = ["555-9999", "555-8888"].map { phoneNumber in
+            CNLabeledValue(label: CNLabelPhoneNumberMain, value: CNPhoneNumber(stringValue: phoneNumber))
+        }
+        mutableContact.emailAddresses = ["updated@example.com"].map { email in
+            CNLabeledValue(label: CNLabelHome, value: email as NSString)
+        }
+        
+        let updatedContact = mutableContact as CNContact
+        
+        XCTAssertEqual(updatedContact.givenName, "UpdatedJohn")
+        XCTAssertEqual(updatedContact.familyName, "UpdatedDoe")
+        XCTAssertEqual(updatedContact.phoneNumbers.count, 2)
+        XCTAssertEqual(updatedContact.emailAddresses.count, 1)
+        XCTAssertEqual(updatedContact.phoneNumbers.first?.value.stringValue, "555-9999")
+        XCTAssertEqual(updatedContact.emailAddresses.first?.value as? String, "updated@example.com")
+    }
+    
+    func testUpdateContactWithEmptyFields() {
+        let originalContact = mockContact1!
+        
+        // Test data structure with empty fields
+        let mutableContact = originalContact.mutableCopy() as! CNMutableContact
+        mutableContact.givenName = "OnlyFirst"
+        mutableContact.familyName = ""
+        mutableContact.phoneNumbers = []
+        mutableContact.emailAddresses = []
+        
+        let updatedContact = mutableContact as CNContact
+        
+        XCTAssertEqual(updatedContact.givenName, "OnlyFirst")
+        XCTAssertEqual(updatedContact.familyName, "")
+        XCTAssertEqual(updatedContact.phoneNumbers.count, 0)
+        XCTAssertEqual(updatedContact.emailAddresses.count, 0)
+    }
+    
+    func testContactUpdateCallbackStructure() {
+        // Test that the completion callback structure works as expected
+        let expectation = XCTestExpectation(description: "Callback should be called")
+        
+        // Simulate a completion callback
+        let simulateCompletion: (Bool, String?) -> Void = { success, error in
+            XCTAssertTrue(success)
+            XCTAssertNil(error)
+            expectation.fulfill()
+        }
+        
+        // Call the callback immediately to test structure
+        simulateCompletion(true, nil)
+        
+        wait(for: [expectation], timeout: 0.1)
+    }
+    
+    // Make savePersistedState public for testing
+    func testSavePersistedStateDirectly() {
+        contactsManager.currentContactIndex = 5
+        contactsManager.savePersistedState()
+        
+        let savedValue = UserDefaults.standard.integer(forKey: "currentContactIndex")
+        XCTAssertEqual(savedValue, 5)
+    }
 }

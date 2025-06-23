@@ -3,11 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 63;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		11D00456D4C4DEB5ABF9B437 /* ContactsManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D4BB76CEC12EB6733DB5794 /* ContactsManagerTests.swift */; };
+		12345678901234567890ABCD /* ContactEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD123456789012345678EF /* ContactEditView.swift */; };
+		EFGH456789012345678901AB /* ContactEditViewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5678901234567890ABCDEFGH /* ContactEditViewTests.swift */; };
 		13544F82FD1884096635CE2B /* ContactCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9E9656519AB150A2AD17791 /* ContactCardView.swift */; };
 		2F59BFE0D538251722E6E4E5 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7B32C65391F26C8F24FDD1A8 /* Preview Assets.xcassets */; };
 		3E97D286715CA255B19AB47D /* CleanMyContactsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C3B2FD6AE993D20602F7B308 /* CleanMyContactsApp.swift */; };
@@ -32,12 +34,14 @@
 
 /* Begin PBXFileReference section */
 		1D4BB76CEC12EB6733DB5794 /* ContactsManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsManagerTests.swift; sourceTree = "<group>"; };
+		5678901234567890ABCDEFGH /* ContactEditViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactEditViewTests.swift; sourceTree = "<group>"; };
+		ABCD123456789012345678EF /* ContactEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactEditView.swift; sourceTree = "<group>"; };
 		215737A571D622A493A76323 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		70A6F6DF0576AB964E20E380 /* ContactsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsManager.swift; sourceTree = "<group>"; };
 		7B32C65391F26C8F24FDD1A8 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		906FAAEF112C4E7836D8F36A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		99E5F6AE92F84E113100439C /* CleanMyContactsTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = CleanMyContactsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		9A9A85270F4B474317C348F8 /* CleanMyContacts.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = CleanMyContacts.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9A9A85270F4B474317C348F8 /* CleanMyContacts.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CleanMyContacts.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C404B5B603822CAC108F54E /* ContactWorkflowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactWorkflowTests.swift; sourceTree = "<group>"; };
 		A2E170476EDEE0A4E3C5B527 /* TrashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrashView.swift; sourceTree = "<group>"; };
 		C3B2FD6AE993D20602F7B308 /* CleanMyContactsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CleanMyContactsApp.swift; sourceTree = "<group>"; };
@@ -59,6 +63,7 @@
 			isa = PBXGroup;
 			children = (
 				1D4BB76CEC12EB6733DB5794 /* ContactsManagerTests.swift */,
+				5678901234567890ABCDEFGH /* ContactEditViewTests.swift */,
 				9C404B5B603822CAC108F54E /* ContactWorkflowTests.swift */,
 				F0E7D66FC78A12951239B72B /* EdgeCaseTests.swift */,
 				E426226D252FA5ACAA4CF1B5 /* TrashFunctionalityTests.swift */,
@@ -72,6 +77,7 @@
 				906FAAEF112C4E7836D8F36A /* Assets.xcassets */,
 				C3B2FD6AE993D20602F7B308 /* CleanMyContactsApp.swift */,
 				E9E9656519AB150A2AD17791 /* ContactCardView.swift */,
+				ABCD123456789012345678EF /* ContactEditView.swift */,
 				70A6F6DF0576AB964E20E380 /* ContactsManager.swift */,
 				215737A571D622A493A76323 /* ContentView.swift */,
 				A2E170476EDEE0A4E3C5B527 /* TrashView.swift */,
@@ -145,8 +151,6 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
-				TargetAttributes = {
-				};
 			};
 			buildConfigurationList = F33904CA72AF0A1DCF4924E2 /* Build configuration list for PBXProject "CleanMyContacts" */;
 			compatibilityVersion = "Xcode 14.0";
@@ -158,7 +162,6 @@
 			);
 			mainGroup = DE9D90B6BEF4B80BAA13C031;
 			minimizedProjectReferenceProxies = 1;
-			preferredProjectObjectVersion = 54;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -187,6 +190,7 @@
 			files = (
 				95B001FA12C184F7665E8E5A /* ContactWorkflowTests.swift in Sources */,
 				11D00456D4C4DEB5ABF9B437 /* ContactsManagerTests.swift in Sources */,
+				EFGH456789012345678901AB /* ContactEditViewTests.swift in Sources */,
 				58B8C8F32329EA7B554468B1 /* EdgeCaseTests.swift in Sources */,
 				9FACA557F1FADF84B6385ADA /* TrashFunctionalityTests.swift in Sources */,
 			);
@@ -198,6 +202,7 @@
 			files = (
 				3E97D286715CA255B19AB47D /* CleanMyContactsApp.swift in Sources */,
 				13544F82FD1884096635CE2B /* ContactCardView.swift in Sources */,
+				12345678901234567890ABCD /* ContactEditView.swift in Sources */,
 				5F7FF55E3CEEC1E9ABDAD6A7 /* ContactsManager.swift in Sources */,
 				422E539A11131D601A262DE1 /* ContentView.swift in Sources */,
 				D5190260967E7962E3686212 /* TrashView.swift in Sources */,
@@ -377,6 +382,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_ASSET_PATHS = "\"CleanMyContacts/Preview Content\"";
+				DEVELOPMENT_TEAM = 69P8H4D57Y;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSContactsUsageDescription = "This app needs access to your contacts to help you organize them.";
@@ -403,6 +409,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_ASSET_PATHS = "\"CleanMyContacts/Preview Content\"";
+				DEVELOPMENT_TEAM = 69P8H4D57Y;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSContactsUsageDescription = "This app needs access to your contacts to help you organize them.";
